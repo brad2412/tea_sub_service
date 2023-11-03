@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  resources :teas, only: [:index, :show, :create, :update, :destroy]
-  resources :customers do
-    resources :subscriptions, only: [:create, :destroy, :index]
+  namespace :api do
+    namespace :v0 do
+      resources :subscriptions, only: [:create, :update]
+      get 'customers/:customer_id/subscriptions', to: 'customers_subscriptions#index'
+    end
   end
 end
-

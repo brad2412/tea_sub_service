@@ -12,11 +12,15 @@ RSpec.describe SubscriptionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
-    it 'cancels a subscription' do
+  describe 'PUT #update' do
+    it 'updates (cancels) a subscription' do
       subscription = Subscription.create! valid_subscription_attributes
-      delete :destroy, params: { id: subscription.to_param }, format: :json
+      put :update, params: { id: subscription.to_param, subscription: { status: 'inactive' } }, format: :json
       expect(response).to have_http_status(:no_content)
+      
+      # You can also check the status of the subscription to be "inactive" if that's what "canceling" means
+      subscription.reload
+      expect(subscription.status).to eq('inactive')
     end
   end
 
